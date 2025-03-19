@@ -25,3 +25,6 @@ data/qrz.db
 
 #Gemini creds
 meshbotai-2438a94d61ee.json
+
+# Custom startup script
+start_meshbot.sh
