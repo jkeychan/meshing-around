@@ -22,3 +22,6 @@ data/rag/*
 
 # qrz db
 data/qrz.db
+
+#Gemini creds
+meshbotai-2438a94d61ee.json

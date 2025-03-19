@@ -416,7 +416,7 @@ def handle_llm(message_from_id, channel_number, deviceID, message, publicChannel
         averageRuntime = sum(llmTotalRuntime) / len(llmTotalRuntime)
         msg = f"Average query time is: {int(averageRuntime)} seconds" if averageRuntime > 25 else ''
     else:
-        msg = "Please wait, response could take 30+ seconds. Fund the SysOp's GPU budget!"
+        msg = "Please wait, response could take 30+ seconds and will be truncated because, mesh!"
 
     if msg != '':
         if (channel_number == publicChannel and antiSpam) or useDMForResponse:
@@ -1437,11 +1437,22 @@ async def start_rx():
         # https://schedule.readthedocs.io/en/stable/
         
         # Reminder Scheduler is enabled every Monday at noon send a log message
-        schedule.every().monday.at("12:00").do(lambda: logger.info("System: Scheduled Broadcast Reminder"))
+        # schedule.every().monday.at("12:00").do(lambda: logger.info("System: Scheduled Broadcast Reminder"))
 
         # Good Morning Every day at 09:00 using send_message function to channel 2 on device 1
         #schedule.every().day.at("09:00").do(lambda: send_message("Good Morning", 2, 0, 1))
 
+        # Good Morning Every day at 09:00 using send_message function to channel 2 on device 1
+        schedule.every().day.at("07:03").do(lambda: send_message("Good morning NC mesh! (https://ncmesh.net)", 1, 0, 1))
+        #schedule.every().day.at("09:33").do(lambda: send_message("Good morning NC mesh! (https://ncmesh.net)", 2, 0, 1))
+
+        # Send WX every Morning at 06:30 using handle_wxc function to channel 2 on device 1
+        schedule.every().day.at("06:30").do(lambda: send_message(handle_wxc(0, 1, 'wx'), 2, 0, 1))
+
+        # Send a Net Starting Now Message Every Wednesday at 20:00 using send_message function to channel 1 on device 1
+        schedule.every().wednesday.at("19:30").do(lambda: send_message("Net typically starts at 20:00 EST (8pm) https://w.wiki/Cidf", 0, 0, 1))
+        schedule.every().saturday.at("19:30").do(lambda: send_message("Net typically starts at 20:00 EST (8pm) https://w.wiki/Cidf", 0, 0, 1))
+        
         # Send WX every Morning at 08:00 using handle_wxc function to channel 2 on device 1
         #schedule.every().day.at("08:00").do(lambda: send_message(handle_wxc(0, 1, 'wx'), 2, 0, 1))
 

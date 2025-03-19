@@ -1,0 +1,19 @@
+[Unit]
+Description=MeshBOT Python Script in tmux
+After=network.target
+
+[Service]
+User=meshbot
+WorkingDirectory=/opt/meshing-around
+ExecStart=/usr/bin/tmux -L meshbot new-session -d -s MeshBOT "/bin/bash /opt/meshing-around/start_meshbot.sh"
+ExecStop=/usr/bin/tmux -L meshbot kill-session -t MeshBOT
+Restart=always
+RestartSec=5
+Environment=TMUX_TMPDIR=/tmp
+Type=forking
+
+[Install]
+WantedBy=multi-user.target
+
+
+
