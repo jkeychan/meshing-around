@@ -512,7 +512,6 @@ async def start_rx():
     # here we go loopty loo
     while True:
         await asyncio.sleep(0.5)
-        pass
 
 def handle_boot(mesh=True):
     try:

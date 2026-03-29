@@ -707,24 +707,6 @@ async def get_closest_nodes(nodeInt=1,returnCount=3, channel=publicChannel):
                                 
                     except Exception as e:
                         pass
-                else:
-                    # request location data currently blocking needs to be async
-                    reqLocationEnabled = False
-                    if reqLocationEnabled:
-                        try:
-                            logger.debug(f"System: Requesting location data for {node['id']}, lastHeard: {node.get('lastHeard', 'N/A')}")
-                            # if not a interface node
-                            if node['num'] in my_node_ids:
-                                ignore = True
-                            else:
-                                # one idea is to send a ping to the node to request location data for if or when, ask again later
-                                interface.sendPosition(destinationId=node['id'], wantResponse=False, channelIndex=channel)
-                                # wayyy too fast async wait
-                                
-                                # send a traceroute request
-                                interface.sendTraceRoute(destinationId=node['id'], channelIndex=channel, wantResponse=False)
-                        except Exception as e:
-                            logger.error(f"System: Error requesting location data for {node['id']}. Error: {e}")
             # sort by distance closest
             #node_list.sort(key=lambda x: (x['latitude']-latitudeValue)**2 + (x['longitude']-longitudeValue)**2)
             node_list.sort(key=lambda x: x['distance'])
@@ -1466,11 +1448,11 @@ def displayNodeTelemetry(nodeID=0, rxNode=0, userRequested=False):
     emji = "🔌" if batteryLevel == 101 else "🪫" if batteryLevel < 10 else "🔋"
     dataResponse += f" Volt:{round(voltage, 1)}"
 
-    if batteryLevel < 25:
+    if batteryLevel < 10:
+        logger.critical(f"System: Critical Battery Level: {batteryLevel}{emji} on Device: {rxNode}")
+    elif batteryLevel < 25:
         logger.warning(f"System: Low Battery Level: {batteryLevel}{emji} on Device: {rxNode}")
         send_message(f"Low Battery Level: {batteryLevel}{emji} on Device: {rxNode}", {secure_channel}, 0, {secure_interface})
-    elif batteryLevel < 10:
-        logger.critical(f"System: Critical Battery Level: {batteryLevel}{emji} on Device: {rxNode}")
 
     # if numRXDupes,numTxRelays,heapFreeBytes,heapTotalBytes are available loge them
     # if numRXDupes != 0:
@@ -2129,7 +2111,6 @@ async def handleSignalWatcher():
                         logger.warning(f"System: antiSpam prevented Alert from Hamlib {msg}")
 
         await asyncio.sleep(1)
-        pass
 
 async def handleFileWatcher():
     global lastFileAlert
@@ -2164,7 +2145,6 @@ async def handleFileWatcher():
                         logger.warning(f"System: antiSpam prevented Alert from FileWatcher")
 
         await asyncio.sleep(1)
-        pass
 
 async def handleWsjtxWatcher():
     # monitor WSJT-X UDP broadcasts for decode messages

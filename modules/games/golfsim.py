@@ -129,6 +129,11 @@ def playGolf(nodeID, message, finishedHole=False, last_cmd=''):
     par3_count = 0
     par4_count = 0
     par5_count = 0
+    for i in range(len(golfTracker)):
+        if golfTracker[i]['nodeID'] == nodeID:
+            par3_count = golfTracker[i].get('par3_count', 0)
+            par4_count = golfTracker[i].get('par4_count', 0)
+            par5_count = golfTracker[i].get('par5_count', 0)
     # Scorecard setup
     total_strokes = 0
     total_to_par = 0
@@ -213,6 +218,9 @@ def playGolf(nodeID, message, finishedHole=False, last_cmd=''):
                     golfTracker[i]['hazard'] = hazard
                     golfTracker[i]['last_played'] = time.time()
                     golfTracker[i]['hole_shots'] = hole_shots
+                    golfTracker[i]['par3_count'] = par3_count
+                    golfTracker[i]['par4_count'] = par4_count
+                    golfTracker[i]['par5_count'] = par5_count
 
             # Show player the hole information
             msg += "⛳️#" + str(hole) + " is a " + str(hole_length) + "-yard Par " + str(par) + "."

@@ -147,11 +147,6 @@ def get_spothole_spots(source=None, band=None, mode=None, date=None, dx_call=Non
     # DX spotted in zone
     if dx_itu_zone:
         spots = [spot for spot in spots if str(spot.get('dx_itu_zone', '')) == str(dx_itu_zone)]
-    if dx_cq_zone:
-        spots = [spot for spot in spots if str(spot.get('dx_cq_zone', '')) == str(dx_cq_zone)]
-    if dx_dxcc_id:
-        spots = [spot for spot in spots if str(spot.get('dx_dxcc_id', '')) == str(dx_dxcc_id)]
-
     # User Runtime Filters
 
     # Filter by dx_call if provided

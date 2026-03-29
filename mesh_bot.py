@@ -434,21 +434,6 @@ def handle_echo(message, message_from_id, deviceID, isDM, channel_number):
         time.sleep(splitDelay) # throttle for 2x send
         return f"🐬echoed to channel {target_channel} device {target_device}"
 
-    # dev echoBinary off
-    echoBinary = False
-    if echoBinary:
-        try:
-            port_num = 256
-            synch_word = b"echo:"
-            parts = message.split("echo ", 1)
-            if len(parts) > 1 and parts[1].strip() != "":
-                msg_to_echo = parts[1]
-                raw_bytes = synch_word + msg_to_echo.encode('utf-8')
-                send_raw_bytes(message_from_id, raw_bytes, nodeInt=deviceID, channel=channel_number, portnum=port_num)
-                return f"Sent binary echo message to {message_from_id} to {port_num} on channel {channel_number} device {deviceID}"
-        except Exception as e:
-            logger.error(f"System: Echo Exception {e}")
-
     if "?" in message:
         isAdmin = isNodeAdmin(message_from_id)
         if isAdmin:
@@ -974,7 +959,10 @@ def handleGolf(message, nodeID, deviceID):
             'total_strokes': 0,
             'total_to_par': 0,
             'par': 0,
-            'hazard': ''
+            'hazard': '',
+            'par3_count': 0,
+            'par4_count': 0,
+            'par5_count': 0,
         })
     # get player's last command from tracker
     for i in range(len(golfTracker)):
@@ -2244,7 +2232,6 @@ async def start_rx():
     # here we go loopty loo
     while True:
         await asyncio.sleep(0.5)
-        pass
 
 # Initialize game trackers
 loadLeaderboard()

@@ -1036,7 +1036,7 @@ def distance(lat=0,lon=0,nodeID=0, reset=False):
             y /= total_points
             z /= total_points
             lon_centroid = math.atan2(y, x)
-            hyp = math.sqrt(x * x + y * y)
+            hyp = math.hypot(x, y)
             lat_centroid = math.atan2(z, hyp)
             lat_centroid = math.degrees(lat_centroid)
             lon_centroid = math.degrees(lon_centroid)
