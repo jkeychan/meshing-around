@@ -408,7 +408,6 @@ def get_database_info():
             prettyBBSdb += f'<li>{bbsdb[i]}</li>'
     except Exception as e:
         print(f"Error with database: {str(e)}")
-        pass
 
     # pretty print the bbsdm
     prettyBBSdm = ""
@@ -417,7 +416,6 @@ def get_database_info():
             prettyBBSdm += f'<li>{bbsdm[i]}</li>'
     except Exception as e:
         print(f"Error with database: {str(e)}")
-        pass
 
     if 'no data' in [lemon_score, dopewar_score, blackjack_score, videopoker_score, mmind_score, golfsim_score]:
         database = "Error(s) Detected"

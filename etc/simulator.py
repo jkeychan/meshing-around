@@ -71,8 +71,6 @@ if __name__ == '__main__': # represents the bot's main loop
     while True: # represents the onReceive() loop in the bot.py
         projectResponse = ""
         responseLength = 0
-        if randomNode:
-            nodeID = get_NodeID() # assign a random nodeID
         packet = input(f"CLIENT {nodeID} INPUT: " ) # Emulate the client input
         if packet != "":
             #try:

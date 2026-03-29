@@ -222,14 +222,8 @@ def get_moon(lat=0, lon=0):
         moon_phase = 'First Quarter 🌓'
     elif illum < 99:
         moon_phase = 'Waxing Gibbous 🌔'
-    elif illum >= 99:
-        moon_phase = 'Full Moon🌕'
-    elif illum > 51:
-        moon_phase = 'Waning Gibbous 🌖'
-    elif 51 >= illum > 49:
-        moon_phase = 'Last Quarter 🌗'
     else:
-        moon_phase = 'Waning Crescent 🌘'
+        moon_phase = 'Full Moon🌕'
     
     moon_table['phase'] = moon_phase
     moon_table['illumination'] = moon.phase

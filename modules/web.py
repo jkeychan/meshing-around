@@ -28,9 +28,6 @@ project_root = os.path.abspath(os.path.join(script_dir, ".."))
 # Build the absolute path to the webRoot folder; to where index.html is located.
 webRoot = os.path.join(project_root, "etc", "www")
 
-if SSL:
-    import ssl
-
 # disable logging
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
@@ -43,17 +40,7 @@ os.chdir(webRoot)
 # Create the HTTP server instance with the desired IP address
 httpd = http.server.HTTPServer((server_ip, PORT), QuietHandler)
 
-if SSL:
-    ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-    try:
-        ctx.load_cert_chain(certfile='./server.pem')
-    except FileNotFoundError:
-        print("SSL certificate file not found. Please generate it using the command provided in the comments.")
-        exit(1)
-    httpd.socket = ctx.wrap_socket(httpd.socket, server_side=True)
-    print(f"Serving reports at https://{server_ip}:{PORT} Press ^C to quit.\n\n")
-else:
-    print(f"Serving reports at http://{server_ip}:{PORT} Press ^C to quit.\n\n")
+print(f"Serving reports at http://{server_ip}:{PORT} Press ^C to quit.\n\n")
 
 if not webServerLogs:
     print("Server Logs are disabled")
