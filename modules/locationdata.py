@@ -83,7 +83,7 @@ def getRepeaterBook(lat=0, lon=0):
     
     try:
         msg = ''
-        response = requests.get(repeater_url)
+        response = requests.get(repeater_url, timeout=urlTimeoutSeconds)
         soup = bs.BeautifulSoup(response.text, 'html.parser')
         table = soup.find('table', attrs={'class': 'w3-table w3-striped w3-responsive w3-mobile w3-auto sortable'})
         if table is not None:
@@ -126,7 +126,7 @@ def getArtSciRepeaters(lat=0, lon=0):
     if zipCode.isnumeric():
         try:
             artsci_url = f"http://www.artscipub.com/mobile/showstate.asp?zip={zipCode}"
-            response = requests.get(artsci_url)
+            response = requests.get(artsci_url, timeout=urlTimeoutSeconds)
             soup = bs.BeautifulSoup(response.text, 'html.parser')
             # results needed xpath is /html/body/table[2]/tbody/tr/td/table/tbody/tr[2]/td/table
             table = soup.find_all('table')[1]

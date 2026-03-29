@@ -222,6 +222,7 @@ try:
     llm_enabled = config['general'].getboolean('ollama', False) # https://ollama.com
     llmModel = config['general'].get('ollamaModel', 'gemma2:2b') # default gemma2:2b
     ollamaHostName = config['general'].get('ollamaHostName', 'http://localhost:11434') # default localhost
+    geminiKeyFile = config['general'].get('geminiKeyFile', './service_account.json') # path to GCP service account JSON key
     # emergency response
     emergency_responder_enabled = config['emergencyHandler'].getboolean('enabled', False)
     emergency_responder_alert_channel = config['emergencyHandler'].getint('alert_channel', 2) # default 2

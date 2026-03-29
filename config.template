@@ -54,12 +54,26 @@ spaceWeather = True
 # enable or disable the wikipedia search module
 wikipedia = True
 
-# Enable ollama LLM see more at https://ollama.com
+# Enable LLM AI feature (supports local Ollama or Google Gemini)
 ollama = False
-# Ollama model to use (defaults to gemma2:2b)
-# ollamaModel = llama3.1
-# server instance to use (defaults to local machine install)
-ollamaHostName = http://localhost:11434
+
+# --- Option A: Local Ollama (default) ---
+# Install Ollama: https://ollama.com  (recommended: Pi 5 with 8GB RAM or better)
+# ollamaModel = gemma2:2b
+# ollamaHostName = http://localhost:11434
+
+# --- Option B: Google Gemini API ---
+# 1. Go to https://console.cloud.google.com/ and create a project
+# 2. Enable the "Generative Language API"
+# 3. Create a Service Account (IAM & Admin > Service Accounts), download JSON key
+# 4. Place the JSON key file in the project root and set geminiKeyFile below
+# 5. Set ollamaHostName to the Gemini model endpoint (no trailing slash):
+#      https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001
+# 6. Set ollamaModel to match the model name in the URL above
+#
+# ollamaModel = gemini-2.0-flash-001
+# ollamaHostName = https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001
+# geminiKeyFile = ./your-service-account-key.json
 
 # StoreForward Enabled and Limits
 StoreForward = True

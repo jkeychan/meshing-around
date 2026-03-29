@@ -436,6 +436,8 @@ def handle_llm(message_from_id, channel_number, deviceID, message, publicChannel
     end = time.time()
     llmRunCounter += 1
     llmTotalRuntime.append(end - start)
+    if len(llmTotalRuntime) > 50:
+        llmTotalRuntime.pop(0)
     
     return response
 
@@ -1075,6 +1077,7 @@ def onReceive(packet, interface):
 
     # Valies assinged to the packet
     rxNode, message_from_id, snr, rssi, hop, hop_away, channel_number = 0, 0, 0, 0, 0, 0, 0
+    hop_limit, hop_start = 0, 0
     pkiStatus = (False, 'ABC')
     replyIDset = False
     emojiSeen = False

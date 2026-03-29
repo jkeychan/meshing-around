@@ -40,9 +40,6 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
 # Change the current working directory to webRoot
 os.chdir(webRoot)
 
-# boot up simple HTTP server
-httpd = http.server.HTTPServer(('127.0.0.1', PORT), QuietHandler)
-
 if SSL:
     ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     try:

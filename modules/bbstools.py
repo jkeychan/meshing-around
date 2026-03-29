@@ -117,7 +117,7 @@ def load_bbsdm():
     try:
         with open('data/bbsdm.pkl', 'rb') as f:
             bbs_dm = pickle.load(f)
-    except:
+    except Exception:
         bbs_dm = [[1234567890, "Message", 1234567890]]
         logger.debug("System: Creating new data/bbsdm.pkl")
         with open('data/bbsdm.pkl', 'wb') as f:
