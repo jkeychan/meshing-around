@@ -1449,16 +1449,6 @@ async def start_rx():
         # Send WX every Morning at 06:30 using handle_wxc function to channel 2 on device 1
         schedule.every().day.at("06:00").do(lambda: send_message(handle_wxc(0, 1, 'wx'), 1, 0, 1))
 
-        # Send a Net Starting Now Message Every Wednesday at 20:00 using send_message function to channel 1 on device 1
-        #schedule.every().wednesday.at("19:30").do(lambda: send_message("Net typically starts at 20:00 EST (8pm) https://w.wiki/Cidf", 0, 0, 1))
-        #schedule.every().saturday.at("19:30").do(lambda: send_message("Net typically starts at 20:00 EST (8pm) https://w.wiki/Cidf", 0, 0, 1))
-        
-        # Send WX every Morning at 08:00 using handle_wxc function to channel 2 on device 1
-        #schedule.every().day.at("08:00").do(lambda: send_message(handle_wxc(0, 1, 'wx'), 2, 0, 1))
-
-        # Send a Net Starting Now Message Every Wednesday at 19:00 using send_message function to channel 2 on device 1
-        #schedule.every().wednesday.at("19:00").do(lambda: send_message("Net Starting Now", 2, 0, 1))
-
         # Send a Welcome Notice for group on the 15th and 25th of the month at 12:00 using send_message function to channel 2 on device 1
         #schedule.every().day.at("12:00").do(lambda: send_message("Welcome to the group", 2, 0, 1)).day(15, 25)
 
