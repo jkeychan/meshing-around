@@ -112,14 +112,6 @@ def get_spothole_spots(source=None, band=None, mode=None, date=None, dx_call=Non
     fetched_count = len(spots)
 
     # Admin Filters done via config.ini
-    de_grid = None  # e.g., "EM00"
-    de_dxcc_id = None  # e.g., "291"
-    de_call = None  # e.g., "K7MHI"
-
-    dx_itu_zone = None  # e.g., "3"
-    dx_cq_zone = None  # e.g., "4"
-    dx_dxcc_id = None  # e.g., "291"
-
     # spotter filters
 
     # location filter
@@ -135,18 +127,6 @@ def get_spothole_spots(source=None, band=None, mode=None, date=None, dx_call=Non
         lon_range = (de_longitude - 1.0, de_longitude + 1.0)
         spots = [spot for spot in spots if lat_range[0] <= spot.get('de_latitude', 0) <= lat_range[1] and
                  lon_range[0] <= spot.get('de_longitude', 0) <= lon_range[1]]
-    # grid filter
-    if de_grid:
-        spots = [spot for spot in spots if spot.get('de_grid', '').upper() == de_grid.upper()]
-    # DXCC Filters
-    if de_dxcc_id:
-        spots = [spot for spot in spots if str(spot.get('de_dxcc_id', '')) == str(de_dxcc_id)]
-    # By reporting callsign
-    if de_call:
-        spots = [spot for spot in spots if spot.get('de_call', '').upper() == de_call.upper()]
-    # DX spotted in zone
-    if dx_itu_zone:
-        spots = [spot for spot in spots if str(spot.get('dx_itu_zone', '')) == str(dx_itu_zone)]
     # User Runtime Filters
 
     # Filter by dx_call if provided

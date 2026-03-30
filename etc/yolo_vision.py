@@ -33,10 +33,7 @@ try:
     if OCR_PROCESSING_ENABLED:
         import pytesseract  # pip install pytesseract
 
-    if PI_CAM:
-        from picamera2 import Picamera2 # pip install picamera2
-    else:
-        import cv2
+    from picamera2 import Picamera2 # pip install picamera2
 except ImportError as e:
     print(f"Missing required module: {e.name}. Please review the comments in program, and try again.", file=sys.stderr)
     sys.exit(1)
@@ -49,23 +46,11 @@ RESOLUTION = "320x240" if LOW_RES_MODE else "640x480"
 # Load YOLOv5
 model = torch.hub.load("ultralytics/yolov5", YOLO_MODEL)
 
-if PI_CAM:
-    picam2 = Picamera2()
-    if LOW_RES_MODE:
-        picam2.preview_configuration.main.size = (320, 240)
-    else:
-        picam2.preview_configuration.main.size = (640, 480)
-    picam2.preview_configuration.main.format = "RGB888"
-    picam2.configure("preview")
-    picam2.start()
-else:
-    if LOW_RES_MODE:
-        cam_res = (320, 240)
-    else:
-        cam_res = (640, 480)
-    cap = cv2.VideoCapture(0)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, cam_res[0])
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cam_res[1])
+picam2 = Picamera2()
+picam2.preview_configuration.main.size = (640, 480)
+picam2.preview_configuration.main.format = "RGB888"
+picam2.configure("preview")
+picam2.start()
 
 print("="*80)
 print(f"                       Sentinal Vision 3000 Booting Up!")
@@ -102,14 +87,7 @@ try:
     system_normal_printed = False # system nominal flag, if true disables printing
     while True:
         i += 1
-        if PI_CAM:
-            frame = picam2.capture_array()
-        else:
-            ret, frame = cap.read()
-            if not ret:
-                print("Failed to grab frame from webcam.")
-                break
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = picam2.capture_array()
         img = Image.fromarray(frame)
 
         results = model(img)
@@ -166,18 +144,12 @@ try:
                 delta = x_center - prev_x
                 if abs(delta) < MOVEMENT_THRESHOLD:
                     direction = "stationary"
-                    if IGNORE_STATIONARY:
-                        if obj_id not in __builtins__.stationary_reported:
-                            msg = f"[{timestamp}] {count} {row['name']} {direction}"
-                            if OCR_PROCESSING_ENABLED and ocr_text:
-                                msg += f" | OCR: {ocr_text}"
-                            alert_output(msg)
-                            __builtins__.stationary_reported.add(obj_id)
-                    else:
+                    if obj_id not in __builtins__.stationary_reported:
                         msg = f"[{timestamp}] {count} {row['name']} {direction}"
                         if OCR_PROCESSING_ENABLED and ocr_text:
                             msg += f" | OCR: {ocr_text}"
                         alert_output(msg)
+                        __builtins__.stationary_reported.add(obj_id)
                 else:
                     direction = "moving right" if delta > 0 else "moving left"
                     msg = f"[{timestamp}] {count} {row['name']} {direction}"
@@ -205,9 +177,5 @@ except KeyboardInterrupt:
 except Exception as e:
     print(f"\nAn error occurred: {e}", file=sys.stderr)
 finally:
-    if PI_CAM:
-        picam2.close()
-        print("Camera closed. Goodbye!")
-    else:
-        cap.release()
-        print("Webcam released. Goodbye!")
+    picam2.close()
+    print("Camera closed. Goodbye!")
