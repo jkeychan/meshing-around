@@ -668,8 +668,8 @@ def get_node_location(nodeID, nodeInt=1, channel=0, round_digits=2):
                         if fuzzItAll:
                             latitude = round(latitude, round_digits)
                             longitude = round(longitude, round_digits)
-                            logger.debug(f"System: Fuzzed location data for {nodeID} is {latitude}, {longitude}")
-                        logger.debug(f"System: Location data for {nodeID} is {latitude}, {longitude}")
+                            logger.debug(f"System: Fuzzed location data for {nodeID}")
+                        logger.debug(f"System: Location data for {nodeID}")
                         return [latitude, longitude]
                     except Exception as e:
                         logger.warning(f"System: Error processing position for node {nodeID}: {e}")
@@ -861,19 +861,19 @@ def send_message(message, ch, nodeid=0, nodeInt=1, bypassChuncking=False):
                 if nodeid == 0:
                     # Send to channel
                     if wantAck:
-                        logger.info(f"Device:{nodeInt} Channel:{ch} " + CustomFormatter.red + f"req.ACK " + f"Chunker{chunkOf} SendingChannel: " + CustomFormatter.white + m.replace('\n', ' '))
+                        logger.info(f"Device:{nodeInt} Channel:{ch} " + CustomFormatter.red + f"req.ACK " + f"Chunker{chunkOf} SendingChannel: " + CustomFormatter.white + f"[{len(m)} chars]")
                         interface.sendText(text=m, channelIndex=ch, wantAck=True)
                     else:
-                        logger.info(f"Device:{nodeInt} Channel:{ch} " + CustomFormatter.red + f"Chunker{chunkOf} SendingChannel: " + CustomFormatter.white + m.replace('\n', ' '))
+                        logger.info(f"Device:{nodeInt} Channel:{ch} " + CustomFormatter.red + f"Chunker{chunkOf} SendingChannel: " + CustomFormatter.white + f"[{len(m)} chars]")
                         interface.sendText(text=m, channelIndex=ch)
                 else:
                     # Send to DM
                     if wantAck:
-                        logger.info(f"Device:{nodeInt} " + CustomFormatter.red + f"req.ACK " + f"Chunker{chunkOf} Sending DM: " + CustomFormatter.white + m.replace('\n', ' ') + CustomFormatter.purple +\
+                        logger.info(f"Device:{nodeInt} " + CustomFormatter.red + f"req.ACK " + f"Chunker{chunkOf} Sending DM: " + CustomFormatter.white + f"[{len(m)} chars]" + CustomFormatter.purple +\
                                  " To: " + CustomFormatter.white + f"{get_name_from_number(nodeid, 'long', nodeInt)}")
                         interface.sendText(text=m, channelIndex=ch, destinationId=nodeid, wantAck=True)
                     else:
-                        logger.info(f"Device:{nodeInt} " + CustomFormatter.red + f"Chunker{chunkOf} Sending DM: " + CustomFormatter.white + m.replace('\n', ' ') + CustomFormatter.purple +\
+                        logger.info(f"Device:{nodeInt} " + CustomFormatter.red + f"Chunker{chunkOf} Sending DM: " + CustomFormatter.white + f"[{len(m)} chars]" + CustomFormatter.purple +\
                                     " To: " + CustomFormatter.white + f"{get_name_from_number(nodeid, 'long', nodeInt)}")
                         interface.sendText(text=m, channelIndex=ch, destinationId=nodeid)
 
@@ -889,19 +889,19 @@ def send_message(message, ch, nodeid=0, nodeInt=1, bypassChuncking=False):
             if nodeid == 0:
                 # Send to channel
                 if wantAck:
-                    logger.info(f"Device:{nodeInt} Channel:{ch} " + CustomFormatter.red + "req.ACK " + "SendingChannel: " + CustomFormatter.white + message.replace('\n', ' '))
+                    logger.info(f"Device:{nodeInt} Channel:{ch} " + CustomFormatter.red + "req.ACK " + "SendingChannel: " + CustomFormatter.white + f"[{len(message)} chars]")
                     interface.sendText(text=message, channelIndex=ch, wantAck=True)
                 else:
-                    logger.info(f"Device:{nodeInt} Channel:{ch} " + CustomFormatter.red + "SendingChannel: " + CustomFormatter.white + message.replace('\n', ' '))
+                    logger.info(f"Device:{nodeInt} Channel:{ch} " + CustomFormatter.red + "SendingChannel: " + CustomFormatter.white + f"[{len(message)} chars]")
                     interface.sendText(text=message, channelIndex=ch)
             else:
                 # Send to DM
                 if wantAck:
-                    logger.info(f"Device:{nodeInt} " + CustomFormatter.red + "req.ACK " + "Sending DM: " + CustomFormatter.white + message.replace('\n', ' ') + CustomFormatter.purple +\
+                    logger.info(f"Device:{nodeInt} " + CustomFormatter.red + "req.ACK " + "Sending DM: " + CustomFormatter.white + f"[{len(message)} chars]" + CustomFormatter.purple +\
                                  " To: " + CustomFormatter.white + f"{get_name_from_number(nodeid, 'long', nodeInt)}")
                     interface.sendText(text=message, channelIndex=ch, destinationId=nodeid, wantAck=True)
                 else:
-                    logger.info(f"Device:{nodeInt} " + CustomFormatter.red + "Sending DM: " + CustomFormatter.white + message.replace('\n', ' ') + CustomFormatter.purple +\
+                    logger.info(f"Device:{nodeInt} " + CustomFormatter.red + "Sending DM: " + CustomFormatter.white + f"[{len(message)} chars]" + CustomFormatter.purple +\
                                 " To: " + CustomFormatter.white + f"{get_name_from_number(nodeid, 'long', nodeInt)}")
                     interface.sendText(text=message, channelIndex=ch, destinationId=nodeid)
             # Throttle the message sending to prevent spamming the device
@@ -1658,7 +1658,7 @@ def consumeMetadata(packet, rxNode=0, channel=-1):
                             logger.info(f"System: ✈️ New air speed record: {speed} km/h from NodeID:{nodeID} ShortName:{get_name_from_number(nodeID, 'short', rxNode)}")
             # if altitude is over highfly_altitude send a log and message for high-flying nodes and not in highfly_ignoreList
             if position_data.get('altitude', 0) > highfly_altitude and highfly_enabled and str(nodeID) not in highfly_ignoreList and not isNodeBanned(nodeID):
-                logger.info(f"System: High Altitude {position_data['altitude']}m on Device: {rxNode} Channel: {channel} NodeID:{nodeID} Lat:{position_data.get('latitude', 0)} Lon:{position_data.get('longitude', 0)}")
+                logger.info(f"System: High Altitude {position_data['altitude']}m on Device: {rxNode} Channel: {channel} NodeID:{nodeID}")
                 altFeet = round(position_data['altitude'] * 3.28084, 2)
                 msg = f"🚀 High Altitude Detected! NodeID:{nodeID} Alt:{altFeet:,.0f}ft/{position_data['altitude']:,.0f}m"
                 
@@ -2288,7 +2288,7 @@ async def handleSentinel(deviceID):
                 if metadata.get('precisionBits') is not None:
                     resolution = metadata.get('precisionBits')
             # Send message alert
-            logger.warning(f"System: {detectedNearby} on Interface{deviceID} Accuracy is {resolution}bits")
+            logger.warning(f"System: Sentry detection on Interface{deviceID} Accuracy is {resolution}bits")
             send_message(f"Sentry{deviceID}: {detectedNearby}", secure_channel, 0, secure_interface)
             
             # Send email alerts
@@ -2300,11 +2300,11 @@ async def handleSentinel(deviceID):
             if cmdShellSentryAlerts and distance <= sentry_radius:
                 # inside zone
                 call_external_script('', script=sentryAlertNear)
-                logger.info(f"System: Sentry Script Alert {sentryAlertNear} for NodeID:{node_id} on Interface{deviceID}")
+                logger.info(f"System: Sentry near-zone script alert on Interface{deviceID}")
             elif cmdShellSentryAlerts and distance >= sentry_radius:
                 # outside zone
                 call_external_script('', script=sentryAlertFar)
-                logger.info(f"System: Sentry Script Alert {sentryAlertFar} for NodeID:{node_id} on Interface{deviceID}")
+                logger.info(f"System: Sentry far-zone script alert on Interface{deviceID}")
 
             handleSentinel_loop = 0 # Loop reset
     else:

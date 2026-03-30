@@ -40,7 +40,7 @@ try:
     # Set location default
     lat = latitudeValue
     lon = longitudeValue
-    print(f"  ✔ Location set to Latitude: {lat}, Longitude: {lon}")
+    print("  ✔ Location set")
     from modules.system import *
     print("  ✔ Imported 'system'")
     
