@@ -160,6 +160,7 @@ def playGolf(nodeID, message, finishedHole=False, last_cmd=''):
         # Start a new hole
         if hole <= 9:
             # Set up hole count restrictions on par
+            hole_length = random.choice(full_hole_range)
             if par3_count < 2 and par4_count < 5 and par5_count < 2:
                 hole_length = random.choice(full_hole_range)
             if par3_count >= 2 and par4_count < 5 and par5_count < 2:

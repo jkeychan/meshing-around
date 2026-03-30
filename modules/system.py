@@ -706,7 +706,7 @@ async def get_closest_nodes(nodeInt=1,returnCount=3, channel=publicChannel):
                                 node_list.append({'id': nodeID, 'latitude': latitude, 'longitude': longitude, 'distance': distance})
                                 
                     except Exception as e:
-                        pass
+                        logger.debug(f"System: Sentry node distance error: {e}")
             # sort by distance closest
             #node_list.sort(key=lambda x: (x['latitude']-latitudeValue)**2 + (x['longitude']-longitudeValue)**2)
             node_list.sort(key=lambda x: x['distance'])
