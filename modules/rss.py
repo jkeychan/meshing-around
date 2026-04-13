@@ -155,14 +155,13 @@ def get_newsAPI(user_search="meshtastic", message_from_id=None, deviceID=None, i
         last_week = datetime.now() - timedelta(days=7)
         newsAPIurl = (
             f"https://newsapi.org/v2/everything?"
-            f"q={user_search}&language=en&from={last_week.strftime('%Y-%m-%d')}&sortBy={newsAPIsort}shedAt&pageSize=5&apiKey={newsAPI_KEY}"
+            f"q={user_search}&language=en&from={last_week.strftime('%Y-%m-%d')}&sortBy={newsAPIsort}shedAt&pageSize=5"
         )
 
-        response = requests.get(newsAPIurl, headers={"User-Agent": COMMON_USER_AGENT}, timeout=urlTimeoutSeconds)
+        response = requests.get(newsAPIurl, headers={"User-Agent": COMMON_USER_AGENT, "X-Api-Key": newsAPI_KEY}, timeout=urlTimeoutSeconds)
         news_data = response.json()
 
         if news_data.get("status") != "ok":
-            error_message = news_data.get("message", "Unknown error")
             logger.error("NewsAPI error: [REDACTED]")
             return ERROR_FETCHING_DATA
         logger.debug(f"System: NewsAPI search got {news_data.get('totalResults', 0)} results")
