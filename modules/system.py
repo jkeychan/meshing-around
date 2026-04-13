@@ -1331,7 +1331,10 @@ def handleAlertBroadcast(deviceID=1):
 def onDisconnect(interface):
     # Handle disconnection of the interface
     logger.warning(f"System: Abrupt Disconnection of Interface detected, attempting reconnect...")
-    interface.close()
+    try:
+        interface.close()
+    except (OSError, BrokenPipeError):
+        pass
 
 # Telemetry Functions
 localTelemetryData = {}
